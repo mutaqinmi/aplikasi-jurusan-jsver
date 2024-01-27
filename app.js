@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.status(200).send("Hello");
+    res.send("Hello");
 })
 
 app.listen(8000, () => {
