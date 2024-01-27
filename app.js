@@ -1,12 +1,5 @@
-const express = require('express');
-const fs = require('fs');
+const controller = require("./controller")
 
-const app = express();
-
-app.get('/', (req, res) => {
-    res.send("Hello");
-})
-
-app.listen(8000, () => {
+controller.app.listen(8000, () => {
     console.log("Site running at port 8000");
 })

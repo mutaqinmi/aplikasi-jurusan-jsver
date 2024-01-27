@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="iE=chrome">
+    <link rel="stylesheet" href="pengembalian-laptop.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"/>
+    <script src="jquery.js"></script>
+    <script src="pengembalian-laptop.js"></script>
+    <title>Pengembalian Laptop</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <i class="ph ph-caret-left"></i>
+            <a href="">Pengembalian Laptop</a>
+        </nav>
+        <div class="image">
+            <div class="cover-image"></div>
+        </div>
+        <div class="form">
+            <form class="form-peminjaman" method="post">
+                <!-- @csrf -->
+                <div class="input-container input-tanggal">
+                    <label for="tanggal">Tanggal Peminjaman <span class="red-dot">*</span></label>
+                    <input type="datetime-local" name="tanggal" id="tanggal" disabled>
+                </div>
+                <div class="input-container input-kelas">
+                    <label for="kelas">Kelas <span class="red-dot">*</span></label>
+                    <input type="text" name="kelas" id="kelas" disabled>
+                </div>
+                <div class="input-container input-nama">
+                    <label for="nama">Nama <span class="red-dot">*</span></label>
+                    <input type="text" name="nama" id="nama" disabled>
+                </div>
+                <div class="input-container input-laptop">
+                    <label for="nomor-laptop">Nomor Laptop <span class="red-dot">*</span></label>
+                    <select required name="nomor-laptop" id="nomor-laptop">
+                        <option disabled selected>Nomor Laptop</option>
+                    </select>
+                </div>
+
+                {{-- Dibikin autocomplete --}}
+                <div class="input-container input-kelengkapan">
+                    <label for="nomor-laptop">Kelengkapan <span class="red-dot">*</span></label>
+                    <div class="checkbox-kelengkapan">
+                        <div class="tas">
+                            <input type="checkbox" name="tas" id="tas">
+                            <label class="checkbox-title" for="tas">Tas</label>
+                        </div>
+                        <div class="mouse">
+                            <input type="checkbox" name="mouse" id="mouse">
+                            <label class="checkbox-title" for="mouse">Mouse</label>
+                        </div>
+                        <div class="charger">
+                            <input type="checkbox" name="charger" id="charger">
+                            <label class="checkbox-title" for="charger">Charger</label>
+                        </div>
+                    </div>
+                </div>
+                {{-- Dibikin autocomplete --}}
+
+                <button type="submit" class="submit-form">
+                    <i class="ph ph-camera"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
