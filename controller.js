@@ -1,6 +1,4 @@
 const express = require('express');
-const ejs = require('ejs')
-const fs = require('fs');
 const app = express();
 const date = new Date();
 
@@ -9,8 +7,12 @@ app.set("views", __dirname + "/views")
 app.set("view engine", "ejs");
 
 app.get('/', (req, res) => {
+    const getMonth = ("0" + date.getMonth() + 1).slice(-2);
+    const getDate = ("0" + date.getDate()).slice(-2);
+    const getHours = ("0" + date.getHours()).slice(-2);
+    const getMinutes = ("0" + date.getMinutes()).slice(-2);
     res.render("peminjaman-laptop", {
-        time: `${date.getFullYear()}-0${date.getMonth() + 1}-${date.getDate()}T0${date.getHours()}:${date.getMinutes()}`,
+        time: `${date.getFullYear()}-${getMonth}-${getDate}T${getHours}:${getMinutes}`,
     });
 })
 
