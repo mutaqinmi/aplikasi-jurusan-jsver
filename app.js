@@ -31,9 +31,8 @@ fastify.get('/peminjaman-laptop', (req, res) => {
 fastify.post("/peminjaman-laptop", (req, res) => {
     const files = req.files();
 
-    console.log(files.filename);
-    // pump(files.file, fs.createWriteStream(`public/uploads/${files.filename}`))
-    // res.send("Ok")
+    pump(files.file, fs.createWriteStream(`public/uploads/${files.filename}`))
+    res.send("Ok")
 })
 
 fastify.listen({port:8000}, () => {
