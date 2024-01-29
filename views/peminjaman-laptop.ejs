@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"/>
         <script src="/script/jquery.js"></script>
         <script src="/script/animation.js"></script>
+        <script src="/script/camera.js"></script>
         <title>Peminjaman Laptop</title>
     </head>
     <body>
@@ -63,10 +64,11 @@
                         </div>
                     </div>
                     <!-- Dibikin autocomplete -->
-
-                    <button type="submit" class="submit-form">
+                    <input type="file" accept="image/*" id="camera" capture="environment" onchange="Show(event)">
+                    <!-- <button type="submit" class="submit-form">
                         <i class="ph ph-camera"></i>
-                    </button>
+                    </button> -->
+                    <img src="" id="image" alt="ahahhaha" >
                 </form>
             </div>
         </div>
