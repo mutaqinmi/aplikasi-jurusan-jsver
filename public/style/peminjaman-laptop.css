@@ -5,8 +5,8 @@
     font-family: Helvetica;
 }
 
-html {
-    scroll-behavior: smooth !important;
+html, body {
+    scroll-behavior: smooth;
 }
 
 a {
