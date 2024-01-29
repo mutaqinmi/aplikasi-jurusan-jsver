@@ -1,9 +1,11 @@
 const show = (e) => {
     if(e.target.files.length > 0){
+        document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "start" }); 
+
         var src = URL.createObjectURL(e.target.files[0]);
         var preview = document.getElementById("result-image");
         preview.src = src;
-        preview.style.height = "5rem";
+        preview.style.height = "10rem";
         
         const submitButton = document.getElementsByClassName("submit")[0];
         if(submitButton.hasChildNodes() === false){
@@ -14,5 +16,6 @@ const show = (e) => {
     
             submitButton.appendChild(button)
         }
+
     }
 }

@@ -20,10 +20,11 @@
   },
   "homepage": "https://github.com/mutaqinmi/aplikasi-jurusan-jsver#readme",
   "dependencies": {
+    "@fastify/static": "^6.12.0",
+    "@fastify/view": "^8.2.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "express-fileupload": "^1.4.3",
     "fastify": "^4.25.2",
-    "nodemon": "^3.0.3"
+    "moment": "^2.30.1"
   }
 }

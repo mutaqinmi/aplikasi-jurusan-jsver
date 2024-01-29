@@ -1,58 +1,27 @@
-const express = require('express');
-const app = express();
+const fastify = require('fastify')();
+const path = require('path');
+const time = require('moment')();
 
-app.use(express.static(__dirname + "/public"))
-app.set("views", __dirname + "/views")
-app.set("view engine", "ejs");
+fastify.register(require('@fastify/view'), {
+    engine: {
+        ejs: require('ejs'),
+    },
+});
 
-class Time {
-    date = new Date();
-    
-    getYear(){
-        return this.date.getFullYear();
-    }
-    
-    getMonth(){
-        return ("0" + this.date.getMonth() + 1).slice(-2);
-    }
+fastify.register(require('@fastify/static'), {
+    root: path.join(__dirname, 'public'),
+})
 
-    getDate(){
-        return ("0" + this.date.getDate()).slice(-2);
-    }
-
-    getHours(){
-        return ("0" + this.date.getHours()).slice(-2);
-    }
-
-    getMinutes(){
-        return ("0" + this.date.getMinutes()).slice(-2);
-    }
-}
-
-const time = new Time();
-const getTime = `${time.getYear()}-${time.getMonth()}-${time.getDate()}T${time.getHours()}:${time.getMinutes()}`;
-
-app.get('/', (req, res) => {
+fastify.get('/', (req, res) => {
     res.redirect('/peminjaman-laptop')
 })
 
-app.get('/peminjaman-laptop', (req, res) => {
-    res.render("peminjaman-laptop", {
-        time: getTime,
-    });
+fastify.get('/peminjaman-laptop', (req, res) => {
+    res.view("/views/peminjaman-laptop.ejs", {
+        time: time.format("YYYY-MM-DDTHH:mm"),
+    })
 })
 
-app.get('/pengembalian-laptop', (req, res) => {
-    res.render("pengembalian-laptop", {
-        time: getTime,
-    });
-})
-
-app.use('/', (req, res) => {
-    res.status(404);
-    res.send("404");
-})
-
-app.listen(8000, () => {
+fastify.listen({port:8000}, () => {
     console.log("Site running at port 8000");
 })
