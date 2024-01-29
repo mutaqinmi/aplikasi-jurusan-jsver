@@ -3,7 +3,7 @@ const show = (e) => {
         const link = document.createElement("a");
         link.setAttribute("href", "#form");
         link.click();
-        document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "start" }); 
+        document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "end" }); 
 
         var src = URL.createObjectURL(e.target.files[0]);
         var preview = document.getElementById("result-image");

@@ -176,6 +176,7 @@ input[type=datetime-local] {
 #result-image {
     width: 100%;
     object-fit: cover;
+    border-radius: 5px;
 }
 
 .submit-button {
