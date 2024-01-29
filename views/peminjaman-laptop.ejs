@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"/>
         <script src="/script/jquery.js"></script>
         <script src="/script/animation.js"></script>
-        <script src="/script/camera.js"></script>
+        <script src="/script/peminjaman-laptop.js"></script>
         <title>Peminjaman Laptop</title>
     </head>
     <body>
@@ -21,7 +21,7 @@
                 <div class="cover-image"></div>
             </div>
             <div class="form">
-                <form class="form-peminjaman" method="post">
+                <form class="form-peminjaman" method="post" enctype="multipart/form-data">
                     <div class="input-container input-tanggal">
                         <label for="tanggal">Tanggal Peminjaman <span class="red-dot">*</span></label>
                         <input type="datetime-local" name="tanggal" id="tanggal" value="<%= time %>" disabled>
@@ -64,12 +64,14 @@
                         </div>
                     </div>
                     <!-- Dibikin autocomplete -->
-                    <label for="addfile">Foto Kondisi</label>
-                    <input type="file" accept="image/*" id="camera" name="addfile" capture="environment" onchange="show(event)">
-                    <!-- <button type="submit" class="submit-form">
-                        <i class="ph ph-camera"></i>
-                    </button> -->
-                    <img src="" id="image">
+                    <div class="foto-kondisi">
+                        <img src="" id="result-image">
+                        <label class="addfile" for="camera">
+                            <i class="ph ph-camera"></i>
+                        </label>
+                        <input type="file" accept="image/*" id="camera" name="camera" capture="environment" onchange="show(event)">
+                    </div>
+                    <div class="submit"></div>
                 </form>
             </div>
         </div>
