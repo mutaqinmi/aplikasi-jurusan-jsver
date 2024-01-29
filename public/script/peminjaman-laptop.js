@@ -1,5 +1,8 @@
 const show = (e) => {
     if(e.target.files.length > 0){
+        const link = document.createElement("a");
+        link.setAttribute("href", "#form");
+        link.click();
         document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "start" }); 
 
         var src = URL.createObjectURL(e.target.files[0]);
