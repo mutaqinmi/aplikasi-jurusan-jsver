@@ -1,11 +1,12 @@
-const fastify = require('fastify')();
+const fastify = require('fastify')({bodyLimit: 30 * 1024 * 1024});
 const fs = require('fs/promises');
 const util = require('util');
 const { pipeline } = require('node:stream')
 const pump = util.promisify(pipeline);
 const path = require('path');
 const { error } = require('console');
-const time = require('moment')();
+const { DateTime } = require('luxon');
+var dates, hours, time;
 
 fastify.register(require('@fastify/view'), {
     engine: {
@@ -19,13 +20,19 @@ fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
 
+const timeInterval = setInterval(() => {
+    dates = DateTime.now().toFormat("yyyy-MM-dd");
+    hours = DateTime.now().toFormat("hh:mm");
+    time = DateTime.now().toFormat("hhmmssddMMyyyy");
+}, 1000)
+
 fastify.get('/', (req, res) => {
     res.redirect('/peminjaman-laptop')
 })
 
 fastify.get('/peminjaman-laptop', (req, res) => {
     res.view("/views/peminjaman-laptop.ejs", {
-        time: time.format("YYYY-MM-DDTHH:mm"),
+        time: `${dates}T${hours}`,
     })
 })
 
@@ -39,14 +46,9 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
         });
     }
 
-    // await files.file.read()
-
-    // await files.toBuffer()
-
-
-    const file = await files.file.read();
-
-    await fs.writeFile(`public/uploads/${time.format("HHmmDDMMYYYY")}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
+    const file = await files.toBuffer();
+    
+    await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
 
     return {
         status: 200,
