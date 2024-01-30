@@ -17,7 +17,7 @@ const show = (e) => {
             button.setAttribute("type", "submit");
             button.setAttribute("class", "submit-button");
     
-            submitButton.appendChild(button)
+            submitButton.appendChild(button);
         }
 
     }

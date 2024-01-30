@@ -27,7 +27,7 @@ const timeInterval = setInterval(() => {
 }, 1000)
 
 fastify.get('/', (req, res) => {
-    res.redirect('/peminjaman-laptop')
+    res.redirect('/pengembalian-laptop')
 })
 
 fastify.get('/peminjaman-laptop', (req, res) => {
@@ -36,25 +36,45 @@ fastify.get('/peminjaman-laptop', (req, res) => {
     })
 })
 
-fastify.get('/pengembalian-laptop', (req, res) => {
-    res.view("/views/pengembalian-laptop.ejs", {
-        time: `${dates}T${hours}`,
-    })
-})
-
 fastify.post("/peminjaman-laptop", async (req, res) => {
-    const files = await req.file();
+    const files_peminjaman = await req.file();
 
-    if (!files.mimetype.includes("image/jpeg")) {
+    if (!files_peminjaman.mimetype.includes("image/jpeg")) {
         return res.status(400).send({
             status: 400,
             error: "The specified file is not an image"
         });
     }
 
-    const file = await files.toBuffer();
+    const file_peminjaman = await files_peminjaman.toBuffer();
     
-    await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
+    await fs.writeFile(`public/uploads/foto-peminjaman/${time}${files_peminjaman.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file_peminjaman);
+
+    return {
+        status: 200,
+        message: "Success"
+    }
+})
+
+fastify.get('/pengembalian-laptop', (req, res) => {
+    res.view("/views/pengembalian-laptop.ejs", {
+        time: `${dates}T${hours}`,
+    })
+})
+
+fastify.post("/pengembalian-laptop", async (req, res) => {
+    const files_pengembalian = await req.file();
+
+    if (!files_pengembalian.mimetype.includes("image/jpeg")) {
+        return res.status(400).send({
+            status: 400,
+            error: "The specified file is not an image"
+        });
+    }
+
+    const file_pengembalian = await files_pengembalian.toBuffer();
+    
+    await fs.writeFile(`public/uploads/foto-pengembalian/${time}${files_pengembalian.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file_pengembalian);
 
     return {
         status: 200,
