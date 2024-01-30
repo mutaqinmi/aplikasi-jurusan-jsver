@@ -1,9 +1,10 @@
 const fastify = require('fastify')();
-const fs = require('fs');
+const fs = require('fs/promises');
 const util = require('util');
-const {pipeline} = require('node:stream')
+const { pipeline } = require('node:stream')
 const pump = util.promisify(pipeline);
 const path = require('path');
+const { error } = require('console');
 const time = require('moment')();
 
 fastify.register(require('@fastify/view'), {
@@ -28,13 +29,31 @@ fastify.get('/peminjaman-laptop', (req, res) => {
     })
 })
 
-fastify.post("/peminjaman-laptop", (req, res) => {
-    const files = req.files();
+fastify.post("/peminjaman-laptop", async (req, res) => {
+    const files = await req.file();
 
-    pump(files.file, fs.createWriteStream(`public/uploads/${files.filename}`))
-    res.send("Ok")
+    if (!files.mimetype.includes("image/jpeg")) {
+        return res.status(400).send({
+            status: 400,
+            error: "The specified file is not an image"
+        });
+    }
+
+    // await files.file.read()
+
+    // await files.toBuffer()
+
+
+    const file = await files.file.read();
+
+    await fs.writeFile(`public/uploads/${time.format("HHmmDDMMYYYY")}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
+
+    return {
+        status: 200,
+        message: "Success"
+    }
 })
 
-fastify.listen({port:8000}, () => {
+fastify.listen({port:8000, host: "0.0.0.0"}, () => {
     console.log("Site running at port 8000");
 })

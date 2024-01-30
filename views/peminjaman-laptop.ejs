@@ -21,7 +21,7 @@
                 <div class="cover-image"></div>
             </div>
             <div class="form" id="form">
-                <form class="form-peminjaman" method="post" enctype="multipart/form-data">
+                <form class="form-peminjaman" method="POST" enctype="multipart/form-data">
                     <div class="input-container input-tanggal">
                         <label for="tanggal">Tanggal Peminjaman <span class="red-dot">*</span></label>
                         <input type="datetime-local" name="tanggal" id="tanggal" value="<%= time %>" disabled>
@@ -44,8 +44,6 @@
                             <option disabled selected>Nomor Laptop</option>
                         </select>
                     </div>
-
-                    <!-- Dibikin autocomplete -->
                     <div class="input-container input-kelengkapan">
                         <label for="nomor-laptop">Kelengkapan <span class="red-dot">*</span></label>
                         <div class="checkbox-kelengkapan">
@@ -63,13 +61,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Dibikin autocomplete -->
                     <div class="foto-kondisi">
                         <img src="" id="result-image">
                         <label class="addfile" for="camera">
                             <i class="ph ph-camera"></i>
                         </label>
-                        <input type="file" accept="image/*" id="camera" name="camera" capture="environment" onchange="show(event)">
+                        <input type="file" accept="image/jpeg" id="camera" name="camera" capture="environment" onchange="show(event)">
                     </div>
                     <div class="submit"></div>
                 </form>
