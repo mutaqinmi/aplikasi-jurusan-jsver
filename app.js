@@ -36,6 +36,12 @@ fastify.get('/peminjaman-laptop', (req, res) => {
     })
 })
 
+fastify.get('/pengembalian-laptop', (req, res) => {
+    res.view("/views/pengembalian-laptop.ejs", {
+        time: `${dates}T${hours}`,
+    })
+})
+
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const files = await req.file();
 

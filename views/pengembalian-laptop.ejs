@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="iE=chrome">
+        <link rel="stylesheet" href="/style/pengembalian-laptop.css">
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"/>
+        <script src="/script/jquery.js"></script>
+        <script src="/script/animation.js"></script>
+        <script src="/script/peminjaman-laptop.js"></script>
+        <title>Pengembalian Laptop</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar">
+                <i class="ph ph-caret-left"></i>
+                <a href="">Pengembalian Laptop</a>
+            </nav>
+            <div class="image">
+                <div class="cover-image"></div>
+            </div>
+            <div class="form" id="form">
+                <form class="form-peminjaman" method="POST" enctype="multipart/form-data">
+                    <div class="input-container input-tanggal">
+                        <label for="tanggal">Tanggal Pengembalian <span class="red-dot">*</span></label>
+                        <input type="datetime-local" name="tanggal" id="tanggal" value="<%= time %>" disabled>
+                    </div>
+                    <div class="input-container input-laptop">
+                        <label for="nomor-laptop">Nomer laptop <span class="red-dot">*</span></label>
+                        <select required name="nomor-laptop" id="nomor-laptop">
+                            <option disabled selected>Nomor Laptop</option>
+                        </select>
+                    </div>
+                    <div class="input-container input-nama">
+                        <label for="nama">Nama <span class="red-dot">*</span></label>
+                        <select disabled  name="nama" id="nama">
+                            <option disabled selected>Nama</option>
+                        </select>
+                    </div>
+                    <div class="input-container input-kelas">
+                        <label for="kelas">Kelas <span class="red-dot">*</span></label>
+                        <select disabled name="kelas" id="kelas">
+                            <option disabled selected>Kelas</option>
+                        </select>
+                    </div>
+                    <!-- <div class="input-container input-laptop">
+                        <label for="nomor-laptop">Nomor Laptop <span class="red-dot">*</span></label>
+                        <select required name="nomor-laptop" id="nomor-laptop">
+                            <option disabled selected>Nomor Laptop</option>
+                        </select>
+                    </div> -->
+                    <div class="input-container input-kelengkapan">
+                        <label for="nomor-laptop">Kelengkapan <span class="red-dot">*</span></label>
+                        <div class="checkbox-kelengkapan">
+                            <div class="tas">
+                                <input type="checkbox" name="tas" id="tas">
+                                <label class="checkbox-title" for="tas">Tas</label>
+                            </div>
+                            <div class="mouse">
+                                <input type="checkbox" name="mouse" id="mouse">
+                                <label class="checkbox-title" for="mouse">Mouse</label>
+                            </div>
+                            <div class="charger">
+                                <input type="checkbox" name="charger" id="charger">
+                                <label class="checkbox-title" for="charger">Charger</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="foto-kondisi">
+                        <img src="" id="result-image">
+                        <label class="addfile" for="camera">
+                            <i class="ph ph-camera"></i>
+                        </label>
+                        <input type="file" accept="image/jpeg" id="camera" name="camera" capture="environment" onchange="show(event)">
+                    </div>
+                    <div class="submit"></div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
