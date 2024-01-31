@@ -1,4 +1,4 @@
-const fastify = require('fastify')({bodyLimit: 30 * 1024 * 1024});
+const fastify = require('fastify')({bodyLimit: 5 * 1024 * 1024});
 const path = require('path');
 const { DateTime } = require('luxon');
 const fs = require('node:fs')
@@ -13,15 +13,15 @@ fastify.register(require('@fastify/view'), {
         ejs: require('ejs'),
     },
 });
-fastify.register(require('@fastify/multipart')) // , { attachFieldsToBody: true }
+fastify.register(require('@fastify/multipart'))
 fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
 
 const timeInterval = setInterval(() => {
     dates = DateTime.now().toFormat("yyyy-MM-dd");
-    hours = DateTime.now().toFormat("hh:mm");
-    time = DateTime.now().toFormat("hhmmssddMMyyyy");
+    hours = DateTime.now().toFormat("HH:mm");
+    time = DateTime.now().toFormat("HHmmssddMMyyyy");
 }, 1000)
 
 fastify.get('/', (req, res) => {
@@ -34,26 +34,19 @@ fastify.get('/peminjaman-laptop', (req, res) => {
     })
 })
 
-<<<<<<< HEAD
 fastify.get('/pengembalian-laptop', (req, res) => {
     res.view("/views/pengembalian-laptop.ejs", {
         time: `${dates}T${hours}`,
     })
 })
-=======
-fastify.addContentTypeParser('text/json', { parseAs: 'string' }, fastify.getDefaultJsonParser('ignore', 'ignore'))
->>>>>>> 88cb4d7e4ae37fa7eae9d44817aeff0c7df41fa7
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
-    const files = await req.file();
-    // const data = await req.body;
+    const data = await req.file();
 
-    if (!files.mimetype.includes("image/jpeg")) {
-        return res.status(400).send({
-            status: 400,
-            error: "The specified file is not an image"
-        });
+    if (data.nama === undefined) {
+        
     }
+    
 
     // const file = await files.toBuffer();
     // await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
