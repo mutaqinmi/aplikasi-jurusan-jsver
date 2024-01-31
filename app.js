@@ -1,9 +1,10 @@
 const fastify = require('fastify')({bodyLimit: 5 * 1024 * 1024});
 const path = require('path');
 const { DateTime } = require('luxon');
-const fs = require('node:fs')
+const fs = require('fs/promises')
 const util = require('node:util')
-const { pipeline } = require('node:stream')
+const { pipeline } = require('node:stream');
+const { name } = require('ejs');
 const pump = util.promisify(pipeline)
 
 var dates, hours, time;
@@ -41,12 +42,44 @@ fastify.get('/pengembalian-laptop', (req, res) => {
 })
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
-    const data = await req.file();
+    const files = await req.file();
+    
+    if(!files.mimetype.includes("image/jpeg")){
+        return res.status(400).send({
+            status: 400,
+            error: "The specified file is not an image"
+        });
+    };
+    const file = await files.toBuffer();
+    const filename = `${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`;
+    var kelas, nama, nomorLaptop, tas, charger, mouse;
+    
+    const data = Object.entries(files)[6][1];
+    for(const obj in data){
+        // console.log(obj)
+        if(data[obj].type === "field"){
 
-    console.log(data.type)
+            console.log(Object.values(data[obj]).includes("tas"))
+            // console.log(data[obj])
+            if (data[obj].fieldname === "kelas"){
+                kelas = data[obj].value
+            } else if (data[obj].fieldname === "nama"){
+                nama = data[obj].value
+            } else if (data[obj].fieldname === "nomorLaptop"){
+                nomorLaptop = data[obj].value
+            } else if (data[obj].fieldname === "tas"){
+                tas = true
+            } else if (data[obj].fieldname === "mouse"){
+                mouse = true
+            } else if (data[obj].fieldname === "charger"){
+                charger = true
+            }
+            // console.log(`${data[obj].fieldname}: ${data[obj].value}`)
+        } 
+    }
 
-    // const file = await files.toBuffer();
-    // await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
+    console.log(`${kelas}, ${nama}, ${nomorLaptop}, ${tas}, ${mouse}, ${charger}, ${filename}`)
+    await fs.writeFile(`public/uploads/${filename}`, file);
 
     return {
         status: 200,
