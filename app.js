@@ -1,11 +1,11 @@
 const fastify = require('fastify')({bodyLimit: 30 * 1024 * 1024});
-const fs = require('fs/promises');
-const util = require('util');
-const { pipeline } = require('node:stream')
-const pump = util.promisify(pipeline);
 const path = require('path');
-const { error } = require('console');
 const { DateTime } = require('luxon');
+const fs = require('node:fs')
+const util = require('node:util')
+const { pipeline } = require('node:stream')
+const pump = util.promisify(pipeline)
+
 var dates, hours, time;
 
 fastify.register(require('@fastify/view'), {
@@ -13,9 +13,7 @@ fastify.register(require('@fastify/view'), {
         ejs: require('ejs'),
     },
 });
-
-fastify.register(require('@fastify/multipart'))
-
+fastify.register(require('@fastify/multipart')) // , { attachFieldsToBody: true }
 fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
@@ -36,14 +34,19 @@ fastify.get('/peminjaman-laptop', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 fastify.get('/pengembalian-laptop', (req, res) => {
     res.view("/views/pengembalian-laptop.ejs", {
         time: `${dates}T${hours}`,
     })
 })
+=======
+fastify.addContentTypeParser('text/json', { parseAs: 'string' }, fastify.getDefaultJsonParser('ignore', 'ignore'))
+>>>>>>> 88cb4d7e4ae37fa7eae9d44817aeff0c7df41fa7
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const files = await req.file();
+    // const data = await req.body;
 
     if (!files.mimetype.includes("image/jpeg")) {
         return res.status(400).send({
@@ -52,9 +55,8 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
         });
     }
 
-    const file = await files.toBuffer();
-    
-    await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
+    // const file = await files.toBuffer();
+    // await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
 
     return {
         status: 200,
