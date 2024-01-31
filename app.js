@@ -43,10 +43,7 @@ fastify.get('/pengembalian-laptop', (req, res) => {
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const data = await req.file();
 
-    if (data.nama === undefined) {
-        
-    }
-    
+    console.log(data.type)
 
     // const file = await files.toBuffer();
     // await fs.writeFile(`public/uploads/${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`, file);
