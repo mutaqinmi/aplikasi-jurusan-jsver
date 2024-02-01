@@ -7,7 +7,7 @@ const { pipeline } = require('node:stream');
 const { name } = require('ejs');
 const pump = util.promisify(pipeline)
 
-var dates, hours, time;
+var dates, hours, time, fullTime;
 
 fastify.register(require('@fastify/view'), {
     engine: {
@@ -23,6 +23,8 @@ const timeInterval = setInterval(() => {
     dates = DateTime.now().toFormat("yyyy-MM-dd");
     hours = DateTime.now().toFormat("HH:mm");
     time = DateTime.now().toFormat("HHmmssddMMyyyy");
+
+    fullTime = `${dates} ${DateTime.now().toFormat("HH:mm:ss")}`;
 }, 1000)
 
 fastify.get('/', (req, res) => {
@@ -31,7 +33,7 @@ fastify.get('/', (req, res) => {
 
 fastify.get('/peminjaman-laptop', (req, res) => {
     res.view("/views/peminjaman-laptop.ejs", {
-        time: `${dates}T${hours}`,
+        time: `${dates} ${hours}`,
     })
 })
 
@@ -43,7 +45,8 @@ fastify.get('/pengembalian-laptop', (req, res) => {
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const files = await req.file();
-    
+    const data = Object.entries(files)[6][1];
+
     if(!files.mimetype.includes("image/jpeg")){
         return res.status(400).send({
             status: 400,
@@ -51,15 +54,14 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
         });
     };
     const file = await files.toBuffer();
-    const filename = `${time}${files.filename.endsWith("jpeg") ? "" : ".jpeg"}`;
-    var kelas, nama, nomorLaptop, tas, charger, mouse;
+    const filename = `${time}.jpeg`;
+    const fields = Object.values(files.fields)
+    fields.find(f => f.fieldname === "kelas");
+    var tanggal = fullTime;
+    var tanggal, kelas, nama, nomorLaptop, tas, charger, mouse;
     
-    const data = Object.entries(files)[6][1];
     for(const obj in data){
-        // console.log(obj)
         if(data[obj].type === "field"){
-
-            console.log(Object.values(data[obj]).includes("tas"))
             // console.log(data[obj])
             if (data[obj].fieldname === "kelas"){
                 kelas = data[obj].value
@@ -67,18 +69,17 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
                 nama = data[obj].value
             } else if (data[obj].fieldname === "nomorLaptop"){
                 nomorLaptop = data[obj].value
-            } else if (data[obj].fieldname === "tas"){
+            } else if (Object.values(data[obj]).includes("tas")){
                 tas = true
-            } else if (data[obj].fieldname === "mouse"){
+            } else if (Object.values(data[obj]).includes("mouse")){
                 mouse = true
-            } else if (data[obj].fieldname === "charger"){
+            } else if (Object.values(data[obj]).includes("charger")){
                 charger = true
             }
-            // console.log(`${data[obj].fieldname}: ${data[obj].value}`)
         } 
     }
-
-    console.log(`${kelas}, ${nama}, ${nomorLaptop}, ${tas}, ${mouse}, ${charger}, ${filename}`)
+    
+    console.log(`${tanggal}, ${kelas}, ${nama}, ${nomorLaptop}, ${tas}, ${mouse}, ${charger}, ${filename}`)
     await fs.writeFile(`public/uploads/${filename}`, file);
 
     return {

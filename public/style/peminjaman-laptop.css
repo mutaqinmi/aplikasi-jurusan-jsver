@@ -135,7 +135,7 @@ a {
     background-color: white;
 }
 
-input[type=datetime-local] {
+#tanggal {
     width: 100%;
     border: none;
     outline: none;
