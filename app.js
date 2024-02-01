@@ -5,7 +5,22 @@ const fs = require('fs/promises')
 const util = require('node:util')
 const { pipeline } = require('node:stream');
 const { name } = require('ejs');
+const fastifyMysql = require('@fastify/mysql');
 const pump = util.promisify(pipeline)
+const mysql = require('mysql');
+const { error } = require('console');
+
+const connectionString = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'aplikasi_jurusan'
+})
+
+connectionString.connect((err) => {
+    if(err) throw err;
+    console.log("connected")
+})
 
 var dates, hours, time, fullTime;
 
@@ -17,6 +32,9 @@ fastify.register(require('@fastify/view'), {
 fastify.register(require('@fastify/multipart'))
 fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
+})
+fastify.register(require('@fastify/mysql'), {
+  connectionString: 'mysql://root@localhost/mysql'
 })
 
 const timeInterval = setInterval(() => {
@@ -38,6 +56,11 @@ fastify.get('/peminjaman-laptop', (req, res) => {
 })
 
 fastify.get('/pengembalian-laptop', (req, res) => {
+    //fastify.mysql.getConnection(onConnect)
+
+    // function onConnect (err, client) {
+    //   if (err) return reply.send(err)
+    // }
     res.view("/views/pengembalian-laptop.ejs", {
         time: `${dates}T${hours}`,
     })
@@ -91,3 +114,13 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
 fastify.listen({port:8000, host: "0.0.0.0"}, () => {
     console.log("Site running at port 8000");
 })
+
+
+/*fastify.get('/user/:id', function(req, reply) {
+  fastify.mysql.query(
+    'SELECT id, username, hash, salt FROM users WHERE id=?', [req.params.id],
+    function onResult (err, result) {
+      reply.send(err || result)
+    }
+  )
+})*/
