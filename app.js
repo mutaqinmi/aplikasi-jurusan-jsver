@@ -2,10 +2,6 @@ const fastify = require('fastify')({bodyLimit: 5 * 1024 * 1024});
 const path = require('path');
 const { DateTime } = require('luxon');
 const fs = require('fs/promises')
-const util = require('node:util')
-const { pipeline } = require('node:stream');
-const { name } = require('ejs');
-const pump = util.promisify(pipeline)
 
 var dates, hours, time, fullTime;
 
@@ -19,7 +15,7 @@ fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
 
-const timeInterval = setInterval(() => {
+setInterval(() => {
     dates = DateTime.now().toFormat("yyyy-MM-dd");
     hours = DateTime.now().toFormat("HH:mm");
     time = DateTime.now().toFormat("HHmmssddMMyyyy");
@@ -45,40 +41,52 @@ fastify.get('/pengembalian-laptop', (req, res) => {
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const files = await req.file();
-    const data = Object.entries(files)[6][1];
-
+    
     if(!files.mimetype.includes("image/jpeg")){
         return res.status(400).send({
             status: 400,
             error: "The specified file is not an image"
         });
     };
+
     const file = await files.toBuffer();
     const filename = `${time}.jpeg`;
-    const fields = Object.values(files.fields)
-    fields.find(f => f.fieldname === "kelas");
     var tanggal = fullTime;
-    var tanggal, kelas, nama, nomorLaptop, tas, charger, mouse;
-    
-    for(const obj in data){
-        if(data[obj].type === "field"){
-            // console.log(data[obj])
-            if (data[obj].fieldname === "kelas"){
-                kelas = data[obj].value
-            } else if (data[obj].fieldname === "nama"){
-                nama = data[obj].value
-            } else if (data[obj].fieldname === "nomorLaptop"){
-                nomorLaptop = data[obj].value
-            } else if (Object.values(data[obj]).includes("tas")){
-                tas = true
-            } else if (Object.values(data[obj]).includes("mouse")){
-                mouse = true
-            } else if (Object.values(data[obj]).includes("charger")){
-                charger = true
+
+    const getValue = (data) => {
+        const fields = Object.values(files.fields)
+        const dataField = fields.find(result => result.fieldname === data);
+        
+        if(data = "tas"){
+            if(dataField === undefined){
+                return false;    
+            } else {
+                return true
             }
-        } 
+        } else if (data === "mouse"){
+            if(dataField === undefined){
+                return false;    
+            } else {
+                return true
+            }
+        } else if (data === "charger"){
+            if(dataField === undefined){
+                return false;    
+            } else {
+                return true
+            }
+        }
+
+        return Object.values(dataField)[4];
     }
     
+    const kelas = getValue("kelas");
+    const nama = getValue("nama");
+    const nomorLaptop = getValue("nomorLaptop");
+    const tas = getValue("tas");
+    const mouse = getValue("mouse");
+    const charger = getValue("charger");
+
     console.log(`${tanggal}, ${kelas}, ${nama}, ${nomorLaptop}, ${tas}, ${mouse}, ${charger}, ${filename}`)
     await fs.writeFile(`public/uploads/${filename}`, file);
 
