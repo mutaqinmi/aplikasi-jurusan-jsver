@@ -4,7 +4,7 @@
   "description": "Aplikasi Jurusan JS Version",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node --env-file=.env --watch app"
   },
   "repository": {
     "type": "git",

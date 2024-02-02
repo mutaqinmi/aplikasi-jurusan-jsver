@@ -1,17 +1,6 @@
-const fastify = require('fastify')({bodyLimit: 5 * 1024 * 1024});
-const path = require('path');
-const { DateTime } = require('luxon');
-const fs = require('fs/promises')
-const mysql = require('mysql');
-const conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'aplikasi_jurusan',
-})
-
-var dates, hours, time, fullTime;
-
+const { fastify, path, dates, hours } = require('./modules');
+const controller = require('./controller');
+const mysql = require('./database');
 fastify.register(require('@fastify/view'), {
     engine: {
         ejs: require('ejs'),
@@ -22,90 +11,33 @@ fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
 
-setInterval(() => {
-    dates = DateTime.now().toFormat("yyyy-MM-dd");
-    hours = DateTime.now().toFormat("HH:mm");
-    time = DateTime.now().toFormat("HHmmssddMMyyyy");
-
-    fullTime = `${dates} ${DateTime.now().toFormat("HH:mm:ss")}`;
-}, 1000)
-
-fastify.get('/', (req, res) => {
-    fastify.redirect('/peminjaman-laptop')
+fastify.get('/', async (req, res) => {
+    await res.redirect('/peminjaman-laptop')
 })
 
-fastify.get('/peminjaman-laptop', (req, res) => {
-    conn.query("SELECT nama_kelas FROM data_kelas", function (err, results) {
-        for(let i = 1; i <= results.length; i++){
-            if(results[i] === undefined){
-                console.log(results)
-            } else {
-                console.log(results[i].nama_kelas)
-            }
-        }
-    })
+fastify.get('/peminjaman-laptop', async (req, res) => {
+    const rowDataKelas = await mysql.selectDataColumnResult("data_kelas", "nama_kelas");
+    const dataKelas = Object.values(JSON.parse(JSON.stringify(rowDataKelas)));
+    const rowDataNama = await mysql.selectDataColumnResult("data_siswa", "nama");
+    const dataNama = Object.values(JSON.parse(JSON.stringify(rowDataNama)));
 
-    res.view("/views/peminjaman-laptop.ejs", {
+    await res.view("/views/peminjaman-laptop.ejs", {
         time: `${dates} ${hours}`,
+        dataKelas: dataKelas,
+        dataNama: dataNama,
     })
 })
 
-fastify.get('/pengembalian-laptop', (req, res) => {
-    res.view("/views/pengembalian-laptop.ejs", {
-        time: `${dates}T${hours}`,
+fastify.get('/pengembalian-laptop', async (req, res) => {
+    await res.view("/views/pengembalian-laptop.ejs", {
+        time: `${dates} ${hours}`,
     })
 })
 
 fastify.post("/peminjaman-laptop", async (req, res) => {
     const files = await req.file();
-    
-    if(!files.mimetype.includes("image/jpeg")){
-        return res.status(400).send({
-            status: 400,
-            error: "The specified file is not an image"
-        });
-    };
 
-    const file = await files.toBuffer();
-    const filename = `${time}.jpeg`;
-    var tanggal = fullTime;
-
-    const getValue = (data) => {
-        const fields = Object.values(files.fields)
-        const dataField = fields.find(result => result.fieldname === data);
-        
-        if(data = "tas"){
-            if(dataField === undefined){
-                return false;    
-            } else {
-                return true
-            }
-        } else if (data === "mouse"){
-            if(dataField === undefined){
-                return false;    
-            } else {
-                return true
-            }
-        } else if (data === "charger"){
-            if(dataField === undefined){
-                return false;    
-            } else {
-                return true
-            }
-        }
-
-        return Object.values(dataField)[4];
-    }
-    
-    const kelas = getValue("kelas");
-    const nama = getValue("nama");
-    const nomorLaptop = getValue("nomorLaptop");
-    const tas = getValue("tas");
-    const mouse = getValue("mouse");
-    const charger = getValue("charger");
-
-    console.log(`${tanggal}, ${kelas}, ${nama}, ${nomorLaptop}, ${tas}, ${mouse}, ${charger}, ${filename}`)
-    await fs.writeFile(`public/uploads/${filename}`, file);
+    controller.pinjam(files);
 
     return {
         status: 200,
@@ -113,7 +45,6 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
     }
 })
 
-
-fastify.listen({port:8000, host: "0.0.0.0"}, () => {
-    console.log("Site running at port 8000");
+fastify.listen({port:process.env.PORT, host: process.env.HOST}, () => {
+    console.log(`Site running at port ${fastify.server.address().port}`);
 })

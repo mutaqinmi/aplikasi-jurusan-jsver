@@ -24,21 +24,31 @@
                 <form class="form-peminjaman" method="POST" enctype="multipart/form-data">
                     <div class="input-container input-kelas">
                         <label for="kelas">Kelas <span class="red-dot">*</span></label>
-                        <select required name="kelas" id="kelas">
+                        <datalist id="kelas">
+                            <% for(let i = 0; i <= (dataNama.length - 1); i++){ %>
+                                <option><%= Object.values(dataNama[i]) %></option>
+                            <% } %>
+                        </datalist>
+                        <input autocomplete="on" list="kelas">
+                        <select name="kelas" id="kelas">
                             <option disabled selected>Kelas</option>
-                            <option value="XI">XI</option>
+                            <% for(let i = 0; i <= (dataKelas.length - 1); i++){ %>
+                                <option value="<%= i %>"><%= Object.values(dataKelas[i]) %></option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="input-container input-nama">
                         <label for="nama">Nama <span class="red-dot">*</span></label>
-                        <select required name="nama" id="nama">
+                        <select name="nama" id="nama">
                             <option disabled selected>Nama</option>
-                            <option value="naufal">Naufal nino</option>
+                            <% for(let i = 0; i <= (dataNama.length - 1); i++){ %>
+                                <option value="<%= i %>"><%= Object.values(dataNama[i]) %></option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="input-container input-laptop">
                         <label for="nomor-laptop">Nomor Laptop <span class="red-dot">*</span></label>
-                        <select required name="nomorLaptop" id="nomor-laptop">
+                        <select name="nomorLaptop" id="nomor-laptop">
                             <option disabled selected>Nomor Laptop</option>
                             <option value="12">12</option>
                         </select>
