@@ -19,3 +19,18 @@ const show = (e) => {
         }
     }
 }
+
+// ------------------------- Handling and Getting Async Data -------------------------
+const getDataNama = (e) => {
+    $(() => {
+        const value = e.target.value;
+        $.ajax({
+            method: "GET",
+            url: "http://localhost:8000/api/data-nama/" + value,
+            type: "json",
+            success: (res) => {
+                $("#nama").value = res.dataSiswa[0].nama;
+            }
+        })
+    })
+}
