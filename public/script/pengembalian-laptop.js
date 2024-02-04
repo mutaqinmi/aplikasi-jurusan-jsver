@@ -26,7 +26,7 @@ const getDataNama = (e) => {
         const value = e.target.value;
         $.ajax({
             method: "GET",
-            url: "http://localhost:8000/api/data-peminjaman/data-nama/" + value,
+            url: location.origin + "/api/data-peminjaman/data-nama/" + value,
             type: "json",
             success: (res) => {
                 $("#nis").val(res.dataSiswa[0].nis);
