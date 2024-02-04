@@ -14,7 +14,7 @@ fastify.register(require('@fastify/static'), {
 
 //* ------------------------- API Routes -------------------------
 // TODO: Buat parameter menjadi integer only
-fastify.get('/api/data-peminjaman/data-nama/:nomorLaptop(^\\d{2})', async (req, res) => {
+fastify.get('/api/data-peminjaman/data-nama/:nomorLaptop(^\\d+)', async (req, res) => {
     const { nomorLaptop } = req.params;
     const dataPeminjaman = await mysql.selectData("data_peminjaman", "*", `WHERE nomor_laptop = '${nomorLaptop}' ORDER BY tanggal_peminjaman DESC`);
     const dataSiswa = await mysql.selectData("data_siswa", "*", `WHERE nis = '${dataPeminjaman[0].nis}'`)
