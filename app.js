@@ -1,5 +1,6 @@
 //* ------------------------- Modules and Plugins -------------------------
 const { fastify, path } = require('./app/modules');
+const ngrok = require('@ngrok/ngrok');
 const controller = require('./app/controller');
 const mysql = require('./app/database');
 fastify.register(require('@fastify/view'), {
@@ -91,3 +92,7 @@ fastify.post("/pengembalian-laptop", async (req, res) => {
 fastify.listen({port: process.env.PORT}, () => {
     console.log(`Site running at port ${fastify.server.address().port}`);
 })
+
+//* ------------------------- Connect to Ngrok -------------------------
+ngrok.connect({ addr: process.env.PORT, authtoken_from_env: true })
+    .then(listener => console.log(`Also online at: ${listener.url()}`));
