@@ -75,9 +75,14 @@ a {
     display: grid;
     gap: 1rem;
     grid-template-areas: 'nomor nomor nomor'
-                         'nama nama nama'
+                         'nis nama nama'
                          'kelengkapan kelengkapan kelengkapan'
                          'result result result';
+    grid-template-columns: 1fr 2fr;
+}
+
+.input-nis {
+    grid-area: nis;
 }
 
 .input-nama {
@@ -127,6 +132,7 @@ a {
     background-color: white;
 }
 
+#nis,
 #nama {
     width: 100%;
     padding: .5rem;

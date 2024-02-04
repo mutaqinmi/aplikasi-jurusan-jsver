@@ -1,7 +1,7 @@
-// ------------------------- Module -------------------------
+//* ------------------------- Module -------------------------
 const { mysql } = require('./modules');
 
-// ------------------------- Connection -------------------------
+//* ------------------------- Connection -------------------------
 const conn = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.USER,
@@ -9,7 +9,7 @@ const conn = mysql.createConnection({
     database: process.env.DATABASE,
 })
 
-// ------------------------- Promise Function -------------------------
+//* ------------------------- Promise Function -------------------------
 const selectDataColumn = (table, column, params) => {
     return new Promise((resolve) => {
         conn.query(`SELECT ${column} FROM ${table} ${params}`, function (err, results) {
@@ -34,7 +34,7 @@ const updateDataColumn = (table, params, id) => {
     })
 }
 
-// ------------------------- Calling Promises -------------------------
+//* ------------------------- Calling Promises -------------------------
 const selectData = async (table, column, params) => {
     const data = await selectDataColumn(table, column, params);
     return Object.values(JSON.parse(JSON.stringify(data)));
@@ -48,7 +48,7 @@ const updateData = async (table, params, id) => {
     await updateDataColumn(table, params, id);
 }
 
-// ------------------------- Export Modules -------------------------
+//* ------------------------- Export Modules -------------------------
 module.exports = {
     conn,
     selectData,

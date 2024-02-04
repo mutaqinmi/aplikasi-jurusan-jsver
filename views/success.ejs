@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/success.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= status %> <span id="statusDesc"><%= statusDesc %></span></h1>
+    <p id="message"><%= message %></p>
+    <p id="redirect-status">Halaman ini akan diperbarui secara otomatis ...</p>
+    <script>
+        setTimeout(() => {
+            location.href = "/peminjaman-laptop";
+        }, 5000);
+    </script>
+</body>
+</html>

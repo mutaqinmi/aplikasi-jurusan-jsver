@@ -1,4 +1,4 @@
-// ------------------------- Handling File and Submits -------------------------
+//* ------------------------- Handling File and Submits -------------------------
 const show = (e) => {
     if(e.target.files.length > 0){
         document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "end" }); 

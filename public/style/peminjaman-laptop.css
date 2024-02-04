@@ -74,13 +74,13 @@ a {
 .form-peminjaman {
     display: grid;
     gap: 1rem;
-    grid-template-areas: 'nama nama nama'
+    grid-template-areas: 'nis nis nis'
                          'nomor kelengkapan kelengkapan'
                          'result result result';
 }
 
-.input-nama {
-    grid-area: nama;
+.input-nis {
+    grid-area: nis;
 }
 
 .input-laptop {
@@ -116,7 +116,7 @@ a {
     align-items: center;
 }
 
-#nama,
+#nis,
 #nomorLaptop {
     width: 100%;
     padding: .5rem;

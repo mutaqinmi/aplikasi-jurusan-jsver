@@ -1,4 +1,4 @@
-// ------------------------- Handling File and Submits -------------------------
+//* ------------------------- Handling File and Submits -------------------------
 const show = (e) => {
     if(e.target.files.length > 0){
         document.getElementById("form").scrollIntoView({ behavior: "smooth", block: "end" }); 
@@ -20,16 +20,21 @@ const show = (e) => {
     }
 }
 
-// ------------------------- Handling and Getting Async Data -------------------------
+//* ------------------------- Handling and Getting Async Data -------------------------
 const getDataNama = (e) => {
     $(() => {
         const value = e.target.value;
         $.ajax({
             method: "GET",
-            url: "http://localhost:8000/api/data-nama/" + value,
+            url: "http://localhost:8000/api/data-peminjaman/data-nama/" + value,
             type: "json",
             success: (res) => {
-                $("#nama").value = res.dataSiswa[0].nama;
+                $("#nis").val(res.dataSiswa[0].nis);
+                $("#nama").val(res.dataSiswa[0].nama);
+            },
+            error: () => {
+                $("#nis").val("");
+                $("#nama").val("");
             }
         })
     })

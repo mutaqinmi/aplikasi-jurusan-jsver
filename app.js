@@ -1,4 +1,4 @@
-// ------------------------- Modules and Plugins -------------------------
+//* ------------------------- Modules and Plugins -------------------------
 const { fastify, path } = require('./app/modules');
 const controller = require('./app/controller');
 const mysql = require('./app/database');
@@ -12,10 +12,11 @@ fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
 })
 
-// ------------------------- API Routes -------------------------
+//* ------------------------- API Routes -------------------------
+// TODO: Buat parameter menjadi integer only
 fastify.get('/api/data-peminjaman/data-nama/:nomorLaptop?', async (req, res) => {
     const { nomorLaptop } = req.params;
-    const dataPeminjaman = await mysql.selectData("data_peminjaman", "*", `WHERE nomor_laptop = '${nomorLaptop}'`);
+    const dataPeminjaman = await mysql.selectData("data_peminjaman", "*", `WHERE nomor_laptop = '${nomorLaptop}' ORDER BY tanggal_peminjaman DESC`);
     const dataSiswa = await mysql.selectData("data_siswa", "*", `WHERE nis = '${dataPeminjaman[0].nis}'`)
 
     return {
@@ -23,7 +24,7 @@ fastify.get('/api/data-peminjaman/data-nama/:nomorLaptop?', async (req, res) => 
     }
 })
 
-// ------------------------- Application Routes -------------------------
+//* ------------------------- Application Routes -------------------------
 fastify.get('/', async (req, res) => {
     await res.redirect('/peminjaman-laptop')
 })
@@ -57,17 +58,36 @@ fastify.post("/peminjaman-laptop", async (req, res) => {
 
     controller.peminjaman(files);
 
-    setTimeout(() => {
-        res.redirect(200, "/peminjaman-laptop");
-    }, 2000);
-
-    // return {
-    //     status: 200,
-    //     message: "Success"
-    // }
+    await res.status(200).view("/views/success.ejs", {
+        status: 200,
+        statusDesc: "OK",
+        title: "Success!",
+        message: "Data peminjaman laptop berhasil diunggah!",
+    })
 })
 
-// ------------------------- Server -------------------------
-fastify.listen({port: process.env.PORT, host: process.env.HOST}, () => {
+fastify.post("/pengembalian-laptop", async (req, res) => {
+    const files = await req.file();
+    if(!files.mimetype.includes("jpeg"|| "jpg")){
+        res.status(400).view("/views/error.ejs", {
+            status: 400,
+            statusDesc: "ERROR",
+            title: "Error!",
+            message: "File yang diunggah bukan gambar/format ekstensi .jpeg!",
+        })
+    }
+
+    controller.pengembalian(files);
+
+    await res.status(200).view("/views/success.ejs", {
+        status: 200,
+        statusDesc: "OK",
+        title: "Success!",
+        message: "Data pengembalian laptop berhasil diunggah!",
+    })
+})
+
+//* ------------------------- Server -------------------------
+fastify.listen({port: process.env.PORT}, () => {
     console.log(`Site running at port ${fastify.server.address().port}`);
 })

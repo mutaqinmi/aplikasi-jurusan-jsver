@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(() => {
     $(window).scroll(() => {
         const scroll = $(window).scrollTop();
         const form = $(".form").outerHeight();

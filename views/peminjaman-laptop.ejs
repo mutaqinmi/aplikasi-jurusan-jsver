@@ -22,14 +22,14 @@
             </div>
             <div class="form" id="form">
                 <form class="form-peminjaman" method="POST" enctype="multipart/form-data">
-                    <div class="input-container input-nama">
-                        <label for="nama">Nama <span class="red-dot">*</span></label>
-                        <datalist id="nama">
+                    <div class="input-container input-nis">
+                        <label for="nis">Nama <span class="red-dot">*</span></label>
+                        <datalist id="nis">
                             <% for(let i = 0; i <= (dataSiswa.length - 1); i++){ %>
                                 <option value="<%= dataSiswa[i].nis %>"><%= dataSiswa[i].nama %></option>
                             <% } %>
                         </datalist>
-                        <input autocomplete="on" list="nama" name="nama" id="nama" placeholder="Nama Siswa" required>
+                        <input autocomplete="on" list="nis" name="nis" id="nis" placeholder="Nama Siswa" required>
                     </div>
                     <div class="input-container input-laptop">
                         <label for="nomorLaptop">Nomor Laptop <span class="red-dot">*</span></label>

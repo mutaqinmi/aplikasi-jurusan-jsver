@@ -29,11 +29,15 @@
                                 <option value="<%= dataLaptop[i].nomor_laptop %>"><%= dataLaptop[i].nomor_laptop %></option>
                             <% } %>
                         </datalist>
-                        <input autocomplete="on" list="nomorLaptop" name="nomorLaptop" id="nomorLaptop" placeholder="Nomor Laptop" onchange="getDataNama(event)" required>
+                        <input autocomplete="on" list="nomorLaptop" name="nomorLaptop" id="nomorLaptop" placeholder="Nomor Laptop" onchange="getDataNama(event)" onkeyup="getDataNama(event)" required>
+                    </div>
+                    <div class="input-container input-nis">
+                        <label for="nis">NIS <span class="red-dot">*</span></label>
+                        <input name="nis" id="nis" placeholder="Nomor Induk Siswa" required>
                     </div>
                     <div class="input-container input-nama">
                         <label for="nama">Nama <span class="red-dot">*</span></label>
-                        <input name="nama" id="nama" placeholder="Nama Siswa" disabled required>
+                        <input name="nama" id="nama" placeholder="Nama Siswa" required>
                     </div>
                     <div class="input-container input-kelengkapan">
                         <label for="kelengkapan">Kelengkapan <span class="red-dot">*</span></label>
