@@ -1,6 +1,5 @@
 //* ------------------------- Modules and Plugins -------------------------
 const { fastify, path } = require('./app/modules');
-const ngrok = require('@ngrok/ngrok');
 const controller = require('./app/controller');
 const mysql = require('./app/database');
 fastify.register(require('@fastify/view'), {
@@ -14,7 +13,6 @@ fastify.register(require('@fastify/static'), {
 })
 
 //* ------------------------- API Routes -------------------------
-// TODO: Buat parameter menjadi integer only
 fastify.get('/api/data-peminjaman/data-nama/:nomorLaptop(^\\d+)', async (req, res) => {
     const { nomorLaptop } = req.params;
     const dataPeminjaman = await mysql.selectData("data_peminjaman", "*", `WHERE nomor_laptop = '${nomorLaptop}' ORDER BY tanggal_peminjaman DESC`);
@@ -92,7 +90,3 @@ fastify.post("/pengembalian-laptop", async (req, res) => {
 fastify.listen({port: process.env.PORT}, () => {
     console.log(`Site running at port ${fastify.server.address().port}`);
 })
-
-//* ------------------------- Connect to Ngrok -------------------------
-ngrok.connect({ addr: process.env.PORT, authtoken_from_env: true })
-    .then(listener => console.log(`Also online at: ${listener.url()}`));
