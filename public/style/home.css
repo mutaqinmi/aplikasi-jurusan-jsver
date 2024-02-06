@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 2rem;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 2rem;
+}
+
+.menu-peminjaman,
+.menu-pengembalian {
+    background-color: #7d1b1b;
+    border-radius: 2rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.menu-peminjaman:hover,
+.menu-pengembalian:hover {
+    box-shadow: inset 0px 0px 20px #3b0e0e;
+}

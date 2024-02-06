@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=chrome">
+    <link rel="stylesheet" href="/style/login.css">
+    <title>Login Admin</title>
+</head>
+<body>
+    <div class="content">
+        <form method="POST" class="login-form" enctype="multipart/form-data">
+            <div class="input-username">
+                <label for="username" class="label-username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username">
+            </div>
+            <div class="input-password">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password">
+                <div class="show">
+                    <input type="checkbox" name="show" id="show">
+                    <label for="show" class="showpw">Show Password</label>
+                </div>
+            </div>
+            <input type="file" name="file" id="file" style="display: none;">
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const show = document.getElementById("show");
+        const password = document.getElementById("password");
+        show.addEventListener("click", () => {
+            show.checked ? password.type = "text" : password.type = "password";
+        })
+    </script>
+</body>
+</html>

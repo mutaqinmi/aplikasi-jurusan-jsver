@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/home.css">
+    <title>Teknologi Informasi - SMK Negeri 2 Tasikmalaya</title>
+</head>
+<body>
+    <div class="menu-peminjaman">
+        <h2>Peminjaman Laptop</h2>
+    </div>
+    <div class="menu-pengembalian">
+        <h2>Pengembalian Laptop</h2>
+    </div>
+
+    <script>
+        const peminjaman = document.querySelector(".menu-peminjaman");
+        const pengembalian = document.querySelector(".menu-pengembalian");
+
+        peminjaman.addEventListener("click", () => {
+            location.href = "/peminjaman-laptop";
+        })
+
+        pengembalian.addEventListener("click", () => {
+            location.href = "/pengembalian-laptop";
+        })
+    </script>
+</body>
+</html>

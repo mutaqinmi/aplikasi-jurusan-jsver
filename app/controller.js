@@ -62,8 +62,17 @@ const pengembalian = async (files) => {
     mysql.updateData("data_laptop", "dipinjam = 0", `nomor_laptop = ${nomorLaptop}`);
 }
 
+const login = async (data) => {
+    const username = getValue(data, "username");
+
+    const result = mysql.selectData("data_admin", "*", `WHERE username = '${username}'`);
+    return result;
+}
+
 //* ------------------------- Export Module -------------------------
 module.exports = {
+    getValue,
     peminjaman,
     pengembalian,
+    login,
 }
